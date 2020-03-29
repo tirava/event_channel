@@ -1,4 +1,4 @@
-package main
+package eventchannel
 
 import "fmt"
 
@@ -30,6 +30,7 @@ func (ch *Channel) UnSubscribe(sub Subscriber) error {
 		delete(ch.subscribers, id)
 		return nil
 	}
+
 	return fmt.Errorf("can't find user %s", id)
 }
 
@@ -37,5 +38,6 @@ func (ch *Channel) UnSubscribeAll() error {
 	for _, sub := range ch.subscribers {
 		return ch.UnSubscribe(sub)
 	}
+
 	return nil
 }

@@ -1,4 +1,4 @@
-package main
+package eventchannel
 
 import "fmt"
 
@@ -16,6 +16,7 @@ func NewUser(username string) *User {
 func (u *User) OnReceive(msg string) {
 	fmt.Printf("MESSAGE GOT: %s: %s\n", u.Username, msg)
 }
+
 func (u *User) GetID() string {
 	return u.Username
 }

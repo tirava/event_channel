@@ -1,20 +1,24 @@
 package main
 
-import "log"
+import (
+	"fmt"
+	"github.com/tirava/event_channel/pkg/event_channel"
+	"log"
+)
 
 func main() {
 
-	user1 := NewUser("jkulvich")
-	user2 := NewUser("vasya")
+	user1 := eventchannel.NewUser("jkulvich")
+	user2 := eventchannel.NewUser("vasya")
 
-	ch1 := NewChannel()
+	ch1 := eventchannel.NewChannel()
 	ch1.Subscribe(user1)
 	ch1.Subscribe(user2)
 
-	ch2 := NewChannel()
+	ch2 := eventchannel.NewChannel()
 	ch2.Subscribe(user2)
 
-	pub := NewPublisher()
+	pub := eventchannel.NewPublisher()
 	pub.AddChannel("test", ch1)
 	pub.AddChannel("test2", ch2)
 
@@ -26,4 +30,12 @@ func main() {
 		log.Fatalf("can't send: %s", err)
 	}
 
+	fmt.Println("Channels:", pub.ListChannels())
+	pub.DeleteChannel("test")
+	fmt.Println("Channels:", pub.ListChannels())
+
+	// error here
+	if err := pub.Send("HELLO!", "test"); err != nil {
+		log.Println("can't send:", err)
+	}
 }

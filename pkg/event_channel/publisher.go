@@ -1,4 +1,4 @@
-package main
+package eventchannel
 
 import (
 	"fmt"
@@ -20,9 +20,19 @@ func (p *Publisher) AddChannel(name string, channel *Channel) {
 	p.channels[name] = channel
 }
 
-//TODO: Удаление канала и получение списка каналов
+func (p *Publisher) DeleteChannel(name string) {
+	delete(p.channels, name)
+}
 
-//TODO: Если 0 имён каналов - отправлять всем
+func (p *Publisher) ListChannels() []string {
+	list := make([]string, 0, len(p.channels))
+	for name := range p.channels {
+		list = append(list, name)
+	}
+
+	return list
+}
+
 func (p *Publisher) Send(msg string, channels ...string) error {
 	for _, ch := range channels {
 		channel, ok := p.channels[ch]
@@ -31,5 +41,6 @@ func (p *Publisher) Send(msg string, channels ...string) error {
 		}
 		channel.Send(msg)
 	}
+
 	return nil
 }
